@@ -36,6 +36,30 @@ public class Movie {
         this.director = director;
     }
 
+//    public Movie(int id, String title, String genre, String director, String runtime, String plot, String location, String poster, String rating, String format, String year, String starring, String copies, String barcode, String user_rating) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+
+    public Movie(int id, String title, String genre, String director, String runtime, String plot, String location, String poster, String rating, String format, String year, String starring, String copies, String barcode, String user_rating) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+        this.director = director;
+        this.runtime = runtime;
+        this.plot = plot;
+        this.location = location;
+        this.poster = poster;
+        this.rating = rating;
+        this.format = format;
+        this.year = year;
+        this.starring = starring;
+        this.copies = copies;
+        this.barcode = barcode;
+        this.user_rating = user_rating;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

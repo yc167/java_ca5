@@ -1,4 +1,4 @@
-package cormaccallanca5;
+package Main;
 
 import java.sql.*;
 import java.sql.Connection;

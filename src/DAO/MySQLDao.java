@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import Exceptions.DaoException;
 
-public class dao
+public class MySQLDao
 {
     public Connection getConnection() throws DaoException 
     {
