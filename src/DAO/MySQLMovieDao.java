@@ -97,6 +97,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         return movies;     // may be empty
     }
 
+    @Override
     public Movie findMovieByTitle(String title) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
@@ -105,11 +106,10 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         try {
             con = this.getConnection();
 
-            String query = "SELECT * FROM movies WHERE title =? ";
+            String query = "SELECT * FROM movies WHERE title LIKE  '%" + title + "%'";
             ps = con.prepareStatement(query);
 
-            ps.setString(1, title);
-
+            //ps.setString(1, title);
             rs = ps.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("ID");
@@ -255,26 +255,26 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         return moviesByGenre;     // u may be null 
     }
 
+    @Override
     public void addMovie(String title, String genre, String director) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-       // Movie m = null;
+        Movie m = null;
         try {
             con = this.getConnection();
 
             String query = "INSERT INTO movies (title, genre, director) VALUES (?,?,?) ";
             ps = con.prepareStatement(query);
+            ps.setString(1, title);
+            ps.setString(2, genre);
+            ps.setString(3, director);
 
-            rs = ps.executeQuery();
-
+            ps.executeUpdate();
+            System.out.println("It worked");
         } catch (SQLException e) {
             throw new DaoException("addMovie " + e.getMessage());
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (ps != null) {
                     ps.close();
                 }
@@ -287,27 +287,26 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         }
 
     }
-    
+
     public void deleteMovie(String title) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-    //    Movie m = null;
+        //    Movie m = null;
         try {
             con = this.getConnection();
 
             String query = "DELETE FROM movies WHERE title = ?";
             ps = con.prepareStatement(query);
+            ps.setString(1, title);
 
-            rs = ps.executeQuery();
+            ps.executeUpdate();
+            System.out.println("Deleted!");
 
         } catch (SQLException e) {
             throw new DaoException("deleteMovie " + e.getMessage());
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (ps != null) {
                     ps.close();
                 }

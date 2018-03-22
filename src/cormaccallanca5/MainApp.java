@@ -41,6 +41,7 @@ public class MainApp {
         System.out.println("3. Search by Genre");
         System.out.println("4. Search by Title And Genre (Do we need this?)");
         System.out.println("5. Add Movie to Database");
+        System.out.println("6. Delete Movie from Database");
 
         performMainMenu();
     }
@@ -64,6 +65,9 @@ public class MainApp {
             }
             if (option == 5) {
                 addMovie();
+            }
+            if (option == 6) {
+                deleteMovie();
             } else {
                 System.out.println("Select available option!");
                 printMainMenu();
@@ -136,25 +140,25 @@ public class MainApp {
         String genre = keyboard.nextLine();
         System.out.println("Enter \nDirector : ");
         String director = keyboard.nextLine();
-        
-        Movie addMovie = movieDao.addMovie(title, genre, director);
+
+        movieDao.addMovie(title, genre, director);
         System.out.println("Adding movie to database.....");
         System.out.println("Movie added!");
-        
+
         printMainMenu();
-        
+
     }
-    
+
     public void deleteMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Enter \nTitle: ");
         String title = keyboard.nextLine();
-        
+
         movieDao.deleteMovie(title);
         System.out.println("Deleting movie from database.....");
         System.out.println("Movie deleted!");
-        
+
         printMainMenu();
-        
+
     }
 }

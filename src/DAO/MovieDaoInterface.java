@@ -26,8 +26,8 @@ public interface MovieDaoInterface {
     //Objects
     public Movie findMovieByTitle(String title) throws DaoException;
     public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException;
-   // public void addMovie(String title, String genre, String director) throws DaoException;
-    // public void deleteMovie(String title) throws DaoException;
+    public void addMovie(String title, String genre, String director) throws DaoException;
+     public void deleteMovie(String title) throws DaoException;
     
     
     
