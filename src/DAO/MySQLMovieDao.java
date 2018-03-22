@@ -255,6 +255,73 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         return moviesByGenre;     // u may be null 
     }
 
+    public void addMovie(String title, String genre, String director) throws DaoException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+       // Movie m = null;
+        try {
+            con = this.getConnection();
+
+            String query = "INSERT INTO movies (title, genre, director) VALUES (?,?,?) ";
+            ps = con.prepareStatement(query);
+
+            rs = ps.executeQuery();
+
+        } catch (SQLException e) {
+            throw new DaoException("addMovie " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("addMovie" + e.getMessage());
+            }
+        }
+
+    }
+    
+    public void deleteMovie(String title) throws DaoException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+    //    Movie m = null;
+        try {
+            con = this.getConnection();
+
+            String query = "DELETE FROM movies WHERE title = ?";
+            ps = con.prepareStatement(query);
+
+            rs = ps.executeQuery();
+
+        } catch (SQLException e) {
+            throw new DaoException("deleteMovie " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("deleteMovie" + e.getMessage());
+            }
+        }
+
+    }
+
+}
 //    @Override
 //    public List<Movie> findAllMovies() throws DaoException {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -271,4 +338,4 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 //        }
 //        
 //    }
-}
+
