@@ -32,18 +32,17 @@ public class MainApp {
         printMainMenu();
 
     }
-
     public void printMainMenu() throws DaoException {
         System.out.println("\n---------------Movie Main Menu---------------");
         System.out.println("-----------------------------------------------");
         System.out.println("1. Display All Movies");
         System.out.println("2. Search by Title");
-        System.out.println("3. Search by Genre");
-        System.out.println("4. Search by Title And Genre (Do we need this?)");
+        System.out.println("3. Search by Director");
+        System.out.println("4. Add Movie");
+        System.out.println("5. Delete Movie");
 
         performMainMenu();
     }
-
     public void performMainMenu() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         int option = keyboard.nextInt();
@@ -56,10 +55,13 @@ public class MainApp {
                 searchByTitle();
             }
             if (option == 3) {
-                searchByGenre();
+                searchByDirector();
             }
             if (option == 4) {
-                searchByTitleAndGenre();
+                addMovie();
+            } 
+            if (option == 5) {
+                deleteMovie();
             } else {
                 System.out.println("Select available option!");
                 printMainMenu();
@@ -67,60 +69,102 @@ public class MainApp {
         }
     }
 
+    
     public void displayAllMovies() throws DaoException {
         List<Movie> allMovies = new ArrayList<Movie>();
         allMovies = movieDao.findAllMovies();
 
-        for (Movie i : allMovies) {
-            System.out.println(i);
-        }
+
+            movieDao.displayListFormat(allMovies);
+
 
         printMainMenu();
 
     }
 
+    
     public void searchByTitle() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Enter \nTitle : ");
         String title = keyboard.nextLine();
 
-        // eg Title : Flashback
+        
         Movie findByTitle = movieDao.findMovieByTitle(title);
-        System.out.println(findByTitle);
+        movieDao.displayObjectFormat(findByTitle);
+
+        printMainMenu();
+
+    }
+    public void searchByDirector() throws DaoException {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter \nDirector : ");
+        String director = keyboard.nextLine();
+
+        List<Movie> moviesByDirector = movieDao.findMovieByDirector(director);
+//        for (Movie i : moviesByDirector) {
+//            System.out.println(i);
+//        }
+        movieDao.displayListFormat(moviesByDirector);
 
         printMainMenu();
 
     }
 
-    public void searchByGenre() throws DaoException {
+
+    public void addMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter \nTitle: ");
+        String title = keyboard.nextLine();
         System.out.println("Enter \nGenre : ");
         String genre = keyboard.nextLine();
+        System.out.println("Enter \nDirector : ");
+        String director = keyboard.nextLine();
 
-        // eg Genre : Action
-        List<Movie> moviesByGenre = movieDao.findMovieByGenre(genre);
-        for (Movie i : moviesByGenre) {
-            System.out.println(i);
-        }
+        movieDao.addMovie(title, genre, director);
+        System.out.println("Adding movie to database.....");
+        System.out.println("Movie added!");
 
         printMainMenu();
 
     }
-
-    public void searchByTitleAndGenre() throws DaoException {
+    public void deleteMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("Enter \nTitle : ");
+        System.out.println("Enter \nTitle: ");
         String title = keyboard.nextLine();
 
-        System.out.println("Enter \nGenre : ");
-        String genre = keyboard.nextLine();
-
-        // eg Title : Flashback
-        // eg Genre : Action
-        Movie findByTitleAndGenre = movieDao.findMovieByTitleAndGenre(title, genre);
-        System.out.println(findByTitleAndGenre);
+        movieDao.deleteMovie(title);
+        System.out.println("Deleting movie from database.....");
+        System.out.println("Movie deleted!");
 
         printMainMenu();
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//    public void searchByTitleAndGenre() throws DaoException {
+//        Scanner keyboard = new Scanner(System.in);
+//        System.out.println("Enter \nTitle : ");
+//        String title = keyboard.nextLine();
+//
+//        System.out.println("Enter \nGenre : ");
+//        String genre = keyboard.nextLine();
+//
+//        // eg Title : Flashback
+//        // eg Genre : Action
+//        Movie findByTitleAndGenre = movieDao.findMovieByTitleAndGenre(title, genre);
+//        movieDao.displayObjectFormat(findByTitleAndGenre);
+//
+//        printMainMenu();
+//
+//    }

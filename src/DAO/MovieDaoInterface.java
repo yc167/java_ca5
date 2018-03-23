@@ -15,21 +15,25 @@ import java.util.List;
 public interface MovieDaoInterface {
     
     
+    //Display
+    public void displayListFormat(List<Movie> x)throws DaoException ;
+    public void displayObjectFormat(Movie x)throws DaoException;
     
-    public void displayAll()  throws DaoException;
     
     //Lists
     public List<Movie> findAllMovies() throws DaoException;
-    public List<Movie> findMovieByGenre(String genre) throws DaoException;
+    public List<Movie> findMovieByDirector(String director) throws DaoException;
     
     
     //Objects
     public Movie findMovieByTitle(String title) throws DaoException;
-    public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException;
+    
+    
+    //Database
     public void addMovie(String title, String genre, String director) throws DaoException;
-     public void deleteMovie(String title) throws DaoException;
+    public void deleteMovie(String title) throws DaoException;
     
     
-    
+    //public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException;
    
 }
