@@ -272,7 +272,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             ps.setString(2, old_title);
 
             ps.executeUpdate();
-                     System.out.println("It worked");
+       //              System.out.println("It worked");
         } catch (SQLException e) {
             throw new DaoException("updateMovieByTitle " + e.getMessage());
         } finally {

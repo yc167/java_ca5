@@ -9,8 +9,8 @@ package DAO;
  *
  * @author ycphu
  */
-public class testing {
+public class teesting123 {
     public static void main(String[] args) {
-        System.out.println("testing!");
+        System.out.println("testing123 ");
     }
 }
