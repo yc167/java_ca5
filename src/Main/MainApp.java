@@ -32,6 +32,7 @@ public class MainApp {
         printMainMenu();
 
     }
+
     public void printMainMenu() throws DaoException {
         System.out.println("\n---------------Movie Main Menu---------------");
         System.out.println("-----------------------------------------------");
@@ -40,9 +41,11 @@ public class MainApp {
         System.out.println("3. Search by Director");
         System.out.println("4. Add Movie");
         System.out.println("5. Delete Movie");
+        System.out.println("6. Update Movie");
 
         performMainMenu();
     }
+
     public void performMainMenu() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         int option = keyboard.nextInt();
@@ -59,42 +62,42 @@ public class MainApp {
             }
             if (option == 4) {
                 addMovie();
-            } 
+            }
             if (option == 5) {
                 deleteMovie();
-            } else {
+            }
+            if(option == 6){
+                updateMovieByTitle();
+            }
+            else {
                 System.out.println("Select available option!");
                 printMainMenu();
             }
         }
     }
 
-    
     public void displayAllMovies() throws DaoException {
         List<Movie> allMovies = new ArrayList<Movie>();
         allMovies = movieDao.findAllMovies();
 
-
-            movieDao.displayListFormat(allMovies);
-
+        movieDao.displayListFormat(allMovies);
 
         printMainMenu();
 
     }
 
-    
     public void searchByTitle() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Enter \nTitle : ");
         String title = keyboard.nextLine();
 
-        
-        Movie findByTitle = movieDao.findMovieByTitle(title);
-        movieDao.displayObjectFormat(findByTitle);
+        List<Movie> findByTitle = movieDao.findMovieByTitle(title);
+        movieDao.displayListFormat(findByTitle);
 
         printMainMenu();
 
     }
+
     public void searchByDirector() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Enter \nDirector : ");
@@ -109,7 +112,6 @@ public class MainApp {
         printMainMenu();
 
     }
-
 
     public void addMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
@@ -127,9 +129,10 @@ public class MainApp {
         printMainMenu();
 
     }
+
     public void deleteMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("Enter \nTitle: ");
+        System.out.println("Enter \nTitle to be deleted: ");
         String title = keyboard.nextLine();
 
         movieDao.deleteMovie(title);
@@ -139,18 +142,24 @@ public class MainApp {
         printMainMenu();
 
     }
+
+    public void updateMovieByTitle() throws DaoException {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter \nTitle to be update: ");
+        String old_title = keyboard.nextLine();
+
+        System.out.println("Enter \nNew title: ");
+        String new_title = keyboard.nextLine();
+
+        movieDao.updateMovieByTitle(old_title, new_title);
+
+        System.out.println("Updating movie .....");
+        System.out.println("Movie updated!");
+
+        printMainMenu();
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
 
 //    public void searchByTitleAndGenre() throws DaoException {
 //        Scanner keyboard = new Scanner(System.in);

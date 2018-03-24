@@ -11,10 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
-
-
 
     public List<Movie> findAllMovies() throws DaoException {
         Connection con = null;
@@ -50,7 +47,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
                 Movie m = new Movie(id, title, genre, director, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
                 movies.add(m);
             }
-            
+
         } catch (SQLException e) {
             throw new DaoException("findAllMovies() " + e.getMessage());
         } finally {
@@ -72,11 +69,11 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
     }
 
     @Override
-    public Movie findMovieByTitle(String title) throws DaoException {
+    public List findMovieByTitle(String title) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Movie m = null;
+        List<Movie> moviesByTitle = new ArrayList<Movie>();
         try {
             con = this.getConnection();
 
@@ -85,7 +82,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 
             //ps.setString(1, title);
             rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 int id = rs.getInt("ID");
                 String t = rs.getString("TITLE");
                 String g = rs.getString("GENRE");
@@ -101,7 +98,9 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
                 String copies = rs.getString("COPIES");
                 String barcode = rs.getString("BARCODE");
                 String user_rating = rs.getString("USER_RATING");
-                m = new Movie(id, t, g, director, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
+                Movie m = new Movie(id, t, g, director, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
+                moviesByTitle.add(m);
+
             }
         } catch (SQLException e) {
             throw new DaoException("findMovieByTitle " + e.getMessage());
@@ -120,8 +119,9 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
                 throw new DaoException("findMovieByTitle" + e.getMessage());
             }
         }
-        return m; // u may be null 
+        return moviesByTitle; // u may be null 
     }
+
     public List<Movie> findMovieByDirector(String director) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
@@ -176,10 +176,6 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 
         return moviesByDirector;     // u may be null 
     }
-    
-
-
-
 
     @Override
     public void addMovie(String title, String genre, String director) throws DaoException {
@@ -196,7 +192,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             ps.setString(3, director);
 
             ps.executeUpdate();
-   //         System.out.println("It worked");
+            //         System.out.println("It worked");
         } catch (SQLException e) {
             throw new DaoException("addMovie " + e.getMessage());
         } finally {
@@ -211,8 +207,8 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
                 throw new DaoException("addMovie" + e.getMessage());
             }
         }
-
     }
+
     public void deleteMovie(String title) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
@@ -226,7 +222,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             ps.setString(1, title);
 
             ps.executeUpdate();
-        //    System.out.println("Deleted!");
+            //    System.out.println("Deleted!");
 
         } catch (SQLException e) {
             throw new DaoException("deleteMovie " + e.getMessage());
@@ -245,34 +241,55 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 
     }
 
+    public void displayListFormat(List<Movie> x) throws DaoException {
 
-
-    public void displayListFormat(List<Movie> x)throws DaoException 
-    {
-        
         System.out.format("%2s%55s%65s%65s", "\nMovieID", "Title", "Genre", "Director\n");
         System.out.format("%2s%55s%65s%65s", "------", "----", "----", "------\n");
-        for(Movie i : x)
-        {
-            System.out.format("%4s%60s%70s%60s" , i.getId() , i.getTitle(), i.getGenre(), i.getDirector() + "\n");
+        for (Movie i : x) {
+            System.out.format("%4s%60s%70s%60s", i.getId(), i.getTitle(), i.getGenre(), i.getDirector() + "\n");
         }
-        
+
     }
-    public void displayObjectFormat(Movie x)throws DaoException 
-    {
-        
+
+    public void displayObjectFormat(Movie x) throws DaoException {
+
         System.out.format("%2s%35s%50s%40s", "\nMovieID", "Title", "Genre", "Director\n");
         System.out.format("%2s%35s%50s%40s", "------", "----", "----", "------\n");
 
-        System.out.format("%4s%40s%50s%40s" , x.getId() , x.getTitle(), x.getGenre(), x.getDirector() + "\n");
+        System.out.format("%4s%40s%50s%40s", x.getId(), x.getTitle(), x.getGenre(), x.getDirector() + "\n");
 
-        
     }
 
-    
-    
-    
-/*
+    public void updateMovieByTitle(String old_title, String new_title) throws DaoException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = this.getConnection();
+
+            String query = "UPDATE movies SET title=? WHERE title = ? ";
+            ps = con.prepareStatement(query);
+            ps.setString(1, new_title);
+            ps.setString(2, old_title);
+
+            ps.executeUpdate();
+                     System.out.println("It worked");
+        } catch (SQLException e) {
+            throw new DaoException("updateMovieByTitle " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("updateMovieByTitle" + e.getMessage());
+            }
+        }
+    }
+
+    /*
         public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException {
         Connection con = null;
         PreparedStatement ps = null;
@@ -324,6 +341,5 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         }
         return m; // u may be null 
     }
- */
-
+     */
 }
