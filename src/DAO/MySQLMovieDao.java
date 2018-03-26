@@ -272,7 +272,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             ps.setString(2, old_title);
 
             ps.executeUpdate();
-       //              System.out.println("It worked");
+            //              System.out.println("It worked");
         } catch (SQLException e) {
             throw new DaoException("updateMovieByTitle " + e.getMessage());
         } finally {
@@ -288,6 +288,61 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             }
         }
     }
+
+    public List<Movie> findMovieByGenre(String genre) throws DaoException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Movie> moviesByGenre = new ArrayList<Movie>();
+
+        try {
+            con = this.getConnection();
+
+            String query = "SELECT * FROM movies WHERE genre LIKE ? ";
+            ps = con.prepareStatement(query);
+
+            ps.setString(1, genre);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String t = rs.getString("TITLE");
+                String g = rs.getString("GENRE");
+                String d = rs.getString("DIRECTOR");
+                String runtime = rs.getString("RUNTIME");
+                String plot = rs.getString("PLOT");
+                String location = rs.getString("LOCATION");
+                String poster = rs.getString("POSTER");
+                String rating = rs.getString("RATING");
+                String format = rs.getString("FORMAT");
+                String year = rs.getString("YEAR");
+                String starring = rs.getString("STARRING");
+                String copies = rs.getString("COPIES");
+                String barcode = rs.getString("BARCODE");
+                String user_rating = rs.getString("USER_RATING");
+                Movie m = new Movie(id, t, g, d, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
+                moviesByGenre.add(m);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("findMovieByGenre " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findMovieByGenre" + e.getMessage());
+            }
+        }
+        return moviesByGenre;     // u may be null 
+    }
+} 
 
     /*
         public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException {
@@ -342,4 +397,4 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         return m; // u may be null 
     }
      */
-}
+

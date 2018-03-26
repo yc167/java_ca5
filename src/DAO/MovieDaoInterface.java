@@ -27,6 +27,8 @@ public interface MovieDaoInterface {
 
     public List<Movie> findMovieByTitle(String title) throws DaoException;
     
+     public List<Movie> findMovieByGenre(String genre) throws DaoException;
+    
 
     //Objects
     public void updateMovieByTitle(String old_title, String new_title) throws DaoException;
