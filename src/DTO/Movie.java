@@ -57,6 +57,11 @@ public class Movie {
         this.barcode = barcode;
         this.user_rating = user_rating;
     }
+
+    public Movie(String title, String director) {
+        this.title = title;
+        this.director = director;
+    }
     
     
 
