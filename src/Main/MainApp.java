@@ -24,7 +24,7 @@ public class MainApp {
     public static void main(String[] args) throws DaoException {
 
         new MainApp().start();
-
+        System.out.println("Cormac GITHUB TEST");
     }
 
     public void start() throws DaoException {
