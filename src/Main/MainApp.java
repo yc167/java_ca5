@@ -43,6 +43,7 @@ public class MainApp {
         System.out.println("5. Delete Movie");
         System.out.println("6. Update Movie");
         System.out.println("7. Recommend Movie (by genre)");
+        System.out.println("8. Record Movie watched");
 
         performMainMenu();
     }
@@ -72,7 +73,10 @@ public class MainApp {
             }
             if (option == 7) {
                 searchByGenre();
-            } else {
+            } 
+            if(option == 8){
+                recordMovie();
+            }else {
                 System.out.println("Select available option!");
                 printMainMenu();
             }
@@ -171,6 +175,20 @@ public class MainApp {
         List<Movie> findByGenre = movieDao.findMovieByGenre(bind_genre);
         System.out.println("We recommend these movies :");
         movieDao.displayListFormat(findByGenre);
+
+        printMainMenu();
+
+    }
+    
+     public void recordMovie() throws DaoException {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter \nMovie watched : ");
+         String title = keyboard.nextLine();
+
+
+        movieDao.recordMovie(title);
+        System.out.println("Recording movie to database.....");
+        System.out.println("Movie added!");
 
         printMainMenu();
 

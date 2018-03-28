@@ -37,6 +37,10 @@ public interface MovieDaoInterface {
     public void addMovie(String title, String genre, String director) throws DaoException;
 
     public void deleteMovie(String title) throws DaoException;
+    
+   public void recordMovie(String title) throws DaoException;
+   
+   //public void addRecordMovie(String title) throws DaoException;
 
     //public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException;
 }
