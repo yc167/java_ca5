@@ -24,7 +24,7 @@ public class MainApp {
     public static void main(String[] args) throws DaoException {
 
         new MainApp().start();
-        System.out.println("Cormac GITHUB TEST");
+        // System.out.println("Cormac GITHUB TEST");
     }
 
     public void start() throws DaoException {
@@ -44,6 +44,7 @@ public class MainApp {
         System.out.println("6. Update Movie");
         System.out.println("7. Recommend Movie (by genre)");
         System.out.println("8. Record Movie watched");
+        System.out.println("9. Exit");
 
         performMainMenu();
     }
@@ -73,10 +74,14 @@ public class MainApp {
             }
             if (option == 7) {
                 searchByGenre();
-            } 
-            if(option == 8){
+            }
+            if (option == 8) {
                 recordMovie();
-            }else {
+            }
+            if (option == 9) {
+                System.out.println("Bye!");
+                break;
+            } else {
                 System.out.println("Select available option!");
                 printMainMenu();
             }
@@ -99,6 +104,8 @@ public class MainApp {
         String title = keyboard.nextLine();
 
         List<Movie> findByTitle = movieDao.findMovieByTitle(title);
+        
+
         movieDao.displayListFormat(findByTitle);
 
         printMainMenu();
@@ -179,12 +186,11 @@ public class MainApp {
         printMainMenu();
 
     }
-    
-     public void recordMovie() throws DaoException {
+
+    public void recordMovie() throws DaoException {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Enter \nMovie watched : ");
-         String title = keyboard.nextLine();
-
+        String title = keyboard.nextLine();
 
         movieDao.recordMovie(title);
         System.out.println("Recording movie to database.....");
