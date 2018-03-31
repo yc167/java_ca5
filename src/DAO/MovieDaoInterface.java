@@ -8,6 +8,7 @@ package DAO;
 import DTO.Movie;
 import Exceptions.DaoException;
 import java.util.List;
+import org.json.JSONException;
 
 /**
  *
@@ -40,7 +41,10 @@ public interface MovieDaoInterface {
     
    public void recordMovie(String title) throws DaoException;
    
-   //public void addRecordMovie(String title) throws DaoException;
+   public  void createJson(List<Movie> movies) throws JSONException;
+   
+   public void deconstructJson(String jsonString) throws JSONException;
+   
 
     //public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException;
 }

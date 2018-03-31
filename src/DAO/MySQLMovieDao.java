@@ -10,6 +10,9 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 
@@ -243,11 +246,20 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
 
     public void displayListFormat(List<Movie> x) throws DaoException {
 
-        System.out.format("%2s%55s%65s%65s", "\nMovieID", "Title", "Genre", "Director\n");
-        System.out.format("%2s%55s%65s%65s", "------", "----", "----", "------\n");
-        for (Movie i : x) {
-            System.out.format("%4s%60s%70s%60s", i.getId(), i.getTitle(), i.getGenre(), i.getDirector() + "\n");
+//        System.out.format("%2s%55s%65s%65s", "\nMovieID", "Title", "Genre", "Director\n");
+//        System.out.format("%2s%55s%65s%65s", "------", "----", "----", "------\n");
+//        for (Movie i : x) {
+//            System.out.format("%4s%60s%70s%60s", i.getId(), i.getTitle(), i.getGenre(), i.getDirector() + "\n");
+//        }
+
+                
+        try {
+            createJson(x);
+        } catch (JSONException ex) {
+            System.out.println("JSON EXCEPTION "+ ex.getMessage());
         }
+        
+        
 
     }
 
@@ -382,7 +394,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
                     //    String mv = i.getTitle();
                     //          System.out.println("Movie Title: " +mv);
                     String query1 = "INSERT INTO history (title) VALUES (example)";
-               //     ps1.setString(1,i.getTitle());
+                    //     ps1.setString(1,i.getTitle());
                     ps1 = con.prepareStatement(query1);
                     ps1.executeUpdate();
                 }
@@ -404,9 +416,50 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         }
     }
 
+    public void createJson(List<Movie> movies) throws JSONException {
+        JSONObject json = new JSONObject();
 
+        for (Movie m : movies) {
+            JSONObject jsonMovie = new JSONObject();
+            jsonMovie.put("id", m.getId());
+            jsonMovie.put("title", m.getTitle());
+            jsonMovie.put("genre", m.getGenre());
+            jsonMovie.put("director", m.getDirector());
 
- 
+            //userArray.put(jsonUser);
+            json.append("movies", jsonMovie);
+        }
+
+        System.out.println(json);
+        System.out.println("");
+
+        //deconstructJson(json.toString());
+
+    }
+    
+    public void deconstructJson(String jsonString) throws JSONException{
+        
+        JSONObject json = new JSONObject(jsonString);
+        
+        List<Movie> movies = new ArrayList<>();
+        
+        JSONArray movieArray = json.getJSONArray("movies");
+        
+        for(int i=0; i<movieArray.length(); i++){
+            JSONObject jsonMovie = (JSONObject) movieArray.get(i);
+            int id = jsonMovie.getInt("id");
+            String title = jsonMovie.getString("title");
+            String genre = jsonMovie.getString("genre");
+            String director = jsonMovie.getString("director");
+            Movie m = new Movie(id, title, genre, director);
+            movies.add(m);
+        }
+        
+         for(Movie m : movies){
+             System.out.println(m.toString());
+         }
+    }
+    
 
 }
 
