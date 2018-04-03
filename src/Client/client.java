@@ -8,6 +8,12 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import DTO.Movie;
+import DAO.MySQLMovieDao;
+import DAO.MovieDaoInterface;
+import Exceptions.DaoException;
+import DAO.MySQLDao;
+
 public class client {
 
     public static void main(String[] args) {
@@ -30,7 +36,7 @@ public class client {
             // while the user wishes to continue sending messages to the server
             while (!message.equalsIgnoreCase("exit")) {
                 // Get data (in bytes) from message to be sent
-                message = "ECHO%%" + message;
+                message = "SEARCH%%" + message;
                 byte[] data = message.getBytes();
                 // Build packet containing new data, addressed to server
                 DatagramPacket p = new DatagramPacket(data, data.length, receiverAddress, receiverPort);

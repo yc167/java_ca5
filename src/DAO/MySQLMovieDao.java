@@ -460,59 +460,6 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
          }
     }
     
-
 }
+    
 
-/*
-        public Movie findMovieByTitleAndGenre(String title, String genre) throws DaoException {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Movie m = null;
-        try {
-            con = this.getConnection();
-
-            String query = "SELECT * FROM movies WHERE title =? AND genre =?";
-            ps = con.prepareStatement(query);
-
-            ps.setString(1, title);
-            ps.setString(2, genre);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("ID");
-                String t = rs.getString("TITLE");
-                String g = rs.getString("GENRE");
-                String director = rs.getString("DIRECTOR");
-                String runtime = rs.getString("RUNTIME");
-                String plot = rs.getString("PLOT");
-                String location = rs.getString("LOCATION");
-                String poster = rs.getString("POSTER");
-                String rating = rs.getString("RATING");
-                String format = rs.getString("FORMAT");
-                String year = rs.getString("YEAR");
-                String starring = rs.getString("STARRING");
-                String copies = rs.getString("COPIES");
-                String barcode = rs.getString("BARCODE");
-                String user_rating = rs.getString("USER_RATING");
-                m = new Movie(id, t, g, director, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
-            }
-        } catch (SQLException e) {
-            throw new DaoException("findMovieByTitleAndGenre " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    freeConnection(con);
-                }
-            } catch (SQLException e) {
-                throw new DaoException("findMovieByTitleAndGenre " + e.getMessage());
-            }
-        }
-        return m; // u may be null 
-    }
- */

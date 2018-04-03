@@ -13,8 +13,8 @@ package DTO;
  */
 public class Movie {
     
-    int id;
-    String title;
+   public  int id;
+    public String title;
     String genre;
     String director;
     String runtime;

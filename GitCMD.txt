@@ -1,0 +1,6 @@
+PULL 
+
+Go to project directory. 
+Right click Git Bash Here. 
+
+$git pull origin master here
