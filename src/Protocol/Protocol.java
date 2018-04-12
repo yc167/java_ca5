@@ -39,7 +39,7 @@ public class Protocol {
 
     public String processInput(String theInput) throws DaoException {
         String theOutput = null;
-            //String[] inputArray = theInput.split(" ");
+        //String[] inputArray = theInput.split(" ");
 //        if (theInput.equalsIgnoreCase("show all movies")) {
 //            List<Movie> movies = movieDao.findAllMovies();
 //           theOutput = "List of allmovies";
@@ -51,28 +51,35 @@ public class Protocol {
             state = SENTKNOCKKNOCK;
 //
         } else if (state == SENTKNOCKKNOCK) {
-        if (theInput.equalsIgnoreCase("Display all movies")) {
-            List<Movie> allMovies = movieDao.findAllMovies();
-            movieDao.displayListFormat(allMovies);
-            theOutput = allMovies.toString();
-            state = SENTCLUE;
+            if (theInput.equalsIgnoreCase("Display all movies")) {
+                List<Movie> allMovies = movieDao.findAllMovies();
+                movieDao.displayListFormat(allMovies);
+                theOutput = allMovies.toString();
+                state = SENTCLUE;
 //
 //
 //     if(str.contains(" ")){
 //        str= str.substring(0, str.indexOf(" ")); 
 //        System.out.println(str);
-   //         String[] components = theInput.split(":");
-        } else if (theInput.substring(0,theInput.indexOf(" ")).equalsIgnoreCase("Search")) {
-            // String[] components = theInput.split(":");               
-            String input = theInput.substring(theInput.indexOf(" "));
-            List<Movie> searchedMovies = movieDao.findMovieByTitle(input.trim());
-            movieDao.displayListFormat(searchedMovies);
-            theOutput = searchedMovies.toString();
-            state = SENTCLUE;
-        } else {
-            theOutput = "You're supposed to say \"Who's there?\"! "
-                    + "\nTry again. Knock! Knock!";
-        }
+                //         String[] components = theInput.split(":");
+            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Search")) {
+                // String[] components = theInput.split(":");               
+                String input = theInput.substring(theInput.indexOf(" "));
+                List<Movie> searchedMovies = movieDao.findMovieByTitle(input.trim());
+
+                movieDao.displayListFormat(searchedMovies);
+                theOutput = searchedMovies.toString();
+                if("[]".equals(theOutput)){
+                    List<Movie> searchedDirector = movieDao.findMovieByDirector(input.trim());
+                    movieDao.displayListFormat(searchedDirector);
+                    theOutput = searchedDirector.toString();
+                }
+                state = SENTCLUE;
+
+            } else {
+                theOutput = "You're supposed to say \"Who's there?\"! "
+                        + "\nTry again. Knock! Knock!";
+            }
         }
 //        } else if (state == SENTCLUE) {
 //            if (theInput.equalsIgnoreCase(clues[currentJoke] + " who?")) {
@@ -101,4 +108,4 @@ public class Protocol {
 //        }
         return theOutput;
     }
-    }
+}

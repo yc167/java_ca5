@@ -430,7 +430,7 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
             json.append("movies", jsonMovie);
         }
 
-        System.out.println(json);
+        System.out.println(json.toString(1));
         System.out.println("");
 
         //deconstructJson(json.toString());

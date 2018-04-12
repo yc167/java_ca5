@@ -83,7 +83,6 @@ public class MainApp {
                 break;
             } else {
                 System.out.println("Select available option!");
-                printMainMenu();
             }
         }
     }
