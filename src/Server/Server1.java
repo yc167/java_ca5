@@ -32,7 +32,7 @@ public class Server1 {
                 // with input and output streams
                 ) {
 
-            String inputLine, outputLine;
+            String inputLine = null, outputLine;
 
             // Initiate conversation with client
             Protocol p = new Protocol();
@@ -46,7 +46,7 @@ public class Server1 {
             // readline() will return 'null' when the stream is ended,
             // which happens when the socket is closed (by the client).
             // 
-            while ((inputLine = in.readLine()) != null) {  // get data until socket is closed
+            while ((inputLine = in.readLine()) != null)  {  // get data until socket is closed
                 outputLine = p.processInput(inputLine);
                 out.println(outputLine);
                 if (outputLine.equals("Bye.")) {
