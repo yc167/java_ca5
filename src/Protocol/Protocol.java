@@ -11,9 +11,7 @@ import DAO.MySQLMovieDao;
 import DTO.Movie;
 import Exceptions.DaoException;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 public class Protocol {
 
@@ -22,24 +20,24 @@ public class Protocol {
     private static final int WAITING = 0;
     private static final int SENTKNOCKKNOCK = 1;
     private static final int SENTCLUE = 2;
-    private static final int ANOTHER = 3;
-
-    private static final int NUMJOKES = 5;
+//    private static final int ANOTHER = 3;
+//
+//    private static final int NUMJOKES = 5;
 
     private int state = WAITING; // set initial state
-    private int currentJoke = 0;
-
-    private String[] commands = {"Display", "Search"};
-    private String[] clues = {"Turnip", "Little Old Lady", "Atch", "Who", "Who"};
-    private String[] answers = {"Turnip the heat, it's cold in here!",
-        "I didn't know you could yodel!",
-        "Bless you!",
-        "Is there an owl in here?",
-        "Is there an echo in here?"};
+//    private int currentJoke = 0;
+//
+//    private String[] commands = {"Display", "Search"};
+//    private String[] clues = {"Turnip", "Little Old Lady", "Atch", "Who", "Who"};
+//    private String[] answers = {"Turnip the heat, it's cold in here!",
+//        "I didn't know you could yodel!",
+//        "Bless you!",
+//        "Is there an owl in here?",
+//        "Is there an echo in here?"};
 
     public String processInput(String theInput) throws DaoException {
         String theOutput = null;
-        //String[] inputArray = theInput.split(" ");
+
 //        if (theInput.equalsIgnoreCase("show all movies")) {
 //            List<Movie> movies = movieDao.findAllMovies();
 //           theOutput = "List of allmovies";
@@ -56,27 +54,42 @@ public class Protocol {
                 movieDao.displayListFormat(allMovies);
                 theOutput = allMovies.toString();
                 state = SENTCLUE;
-//
-//
-//     if(str.contains(" ")){
-//        str= str.substring(0, str.indexOf(" ")); 
-//        System.out.println(str);
-                //         String[] components = theInput.split(":");
+
             } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Search")) {
-                // String[] components = theInput.split(":");               
+    
                 String input = theInput.substring(theInput.indexOf(" "));
                 List<Movie> searchedMovies = movieDao.findMovieByTitle(input.trim());
 
                 movieDao.displayListFormat(searchedMovies);
                 theOutput = searchedMovies.toString();
-                if("[]".equals(theOutput)){
+                if ("[]".equals(theOutput)) {
                     List<Movie> searchedDirector = movieDao.findMovieByDirector(input.trim());
                     movieDao.displayListFormat(searchedDirector);
                     theOutput = searchedDirector.toString();
                 }
                 state = SENTCLUE;
 
-            } else {
+            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Add")) {
+                //exp: ADD TITLE movietitle GENRE moviegenre DIRECTOR moviedirector
+                String[] components = theInput.split(" ");
+                movieDao.addMovie(components[2], components[4], components[6]);
+                theOutput = "Movie added to the database!";
+                state = SENTCLUE;
+
+            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Delete")) {
+                String[] components = theInput.split(" ");
+                movieDao.deleteMovie(components[1]);
+                theOutput = "Movie deleted from the database!";
+                state = SENTCLUE;
+            } 
+            else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Update")) {
+                //exp: UPDATE oldmovietitle TO newmovietitle
+                      String[] components = theInput.split(" ");
+                      movieDao.updateMovieByTitle(components[1], components[3]);
+                      theOutput = "Movie updated!";
+                      state = SENTCLUE;
+            }
+            else {
                 theOutput = "You're supposed to say \"Who's there?\"! "
                         + "\nTry again. Knock! Knock!";
             }
