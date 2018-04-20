@@ -4,10 +4,11 @@ import Exceptions.DaoException;
 import Protocol.Protocol;
 import java.net.*;
 import java.io.*;
+import org.json.JSONException;
 
 public class Server1 {
 
-    public static void main(String[] args) throws IOException, DaoException {
+    public static void main(String[] args) throws IOException, DaoException, JSONException {
 
         int portNumber = 4444;
 
@@ -36,8 +37,9 @@ public class Server1 {
 
             // Initiate conversation with client
             Protocol p = new Protocol();
-            outputLine = p.processInput(null);
-            out.println(outputLine);  // will send "Knock, Knock" message
+            
+            //outputLine = p.processInput(null);
+            //out.println(outputLine);  // will send "Knock, Knock" message
 
             // in.readline() waits for (and gathers) input from the socket. 
             // It returns when a newline ('\n') is encountered, and the
