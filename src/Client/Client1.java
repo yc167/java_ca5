@@ -6,7 +6,10 @@
 package Client;
 
 import DTO.Movie;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,41 +48,62 @@ public class Client1 {
             System.out.println("now waiting for response from server.");
 
             while ((fromServer = in.readLine()) != null) {  // keep reading from stream
-                System.out.println("Received (Server -> Client): " + fromServer);
+                //System.out.println("Received (Server -> Client): " + fromServer);
                 if (fromServer.equals("Bye.")) {
                     break;
                 }
 
-                // conver the json string from server into List<Movies> using JSONArray
-                JSONObject obj = new JSONObject(fromServer);
+//                // conver the json string from server into List<Movies> using JSONArray
+//                JSONObject obj = new JSONObject(fromServer);
+//               
+//                System.out.println("JSON Object dump: " + obj.toString());
+//
+//                JSONArray arr = obj.getJSONArray();
+//
+//                // code here to convert a JSONArray to a List<Movie>  using JSON ORG
+//                List<Movie> list = new ArrayList<Movie>();
+//                
+//
+//                if (arr != null) {
+//                    for (int i = 0; i < arr.length(); i++) {
+//                        
+//                        System.out.println("\n\n ... in loop, about to getJSONObject() ** \n\n");
+//                        
+//                        JSONObject o = arr.getJSONObject(i); 
+//                        
+//                        System.out.println("id = " + o.get("id"));
+//                        
+//                        
+//                        //list.add(arr.get(i));
+//                    }
+//                }
+                Gson gson = new Gson();
 
-                JSONArray arr = obj.getJSONArray("movies");  
+                // pass the JSON String and the type of the object into the deserializer
+                // and it will deserialize the JSON and create a List of Movies.
+                Type type = new TypeToken<List<Movie>>() {
+                }.getType();
 
-                // code here to convert a JSONArray to a List<Movie>  using JSON ORG
-                
-              //  List<Movie> list = new ArrayList<Movie>();
-                //movies = arr.toList();
+                List<Movie> moviesList = gson.fromJson(fromServer, type);
 
-                //for (int i = 0; i < arr.length(); i++) {
-                  //  list.add(fromJson(arr.get(i)));
-
-                  
-//JSONObject sonObject = tomJsonObject.getJSONObject("passport");
-//String nationality = passportJsonObject.getString("nationality");
-                    System.out.println("Enter next command:  ");
-                    userInput = stdIn.readLine();  // ask user for input
-                    if (userInput != null) {
-                        System.out.println("Sending (Client -> Server): " + userInput);
-                        out.println(userInput);  // send message to server
-                    }
+                for (Movie m : moviesList) {
+                    System.out.println(m.getTitle());
                 }
-            }catch (UnknownHostException e) {
+
+                System.out.println("Enter next command:  ");
+                userInput = stdIn.readLine();  // ask user for input
+                if (userInput != null) {
+                    System.out.println("Sending (Client -> Server): " + userInput);
+                    out.println(userInput);  // send message to server
+                }
+            }
+        } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to "
                     + hostName);
             System.exit(1);
         }
-        }
     }
+}

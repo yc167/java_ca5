@@ -10,6 +10,9 @@ import DAO.MovieDaoInterface;
 import DAO.MySQLMovieDao;
 import DTO.Movie;
 import Exceptions.DaoException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,12 +82,23 @@ public class Protocol {
     
     
     public String createJSON(List<Movie> movieList) throws JSONException {
-       
-        JSONObject jsonObject = new JSONObject().put("movies", new JSONArray(movieList));
-  
-        System.out.println("Server - Protocol - createJSON():" + jsonObject.toString());
-        
-        return jsonObject.toString();
+
+//        JSONObject jsonObject = new JSONObject().put("movies", new JSONArray(movieList));
+//  
+//        System.out.println("Server - Protocol - createJSON():" + jsonObject.toString());
+//        
+//        
+//                for (Movie m : movieList) {
+//                    System.out.println(m + "\n");
+//        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Movie>>() {
+        }.getType();
+
+        // we pass the list and its type into the Gson serializer method
+        String json = gson.toJson(movieList, type); // serializes target to Json
+
+        return json;
     }
 //    
 //        public String createJson(List<Movie> movies) throws JSONException {
