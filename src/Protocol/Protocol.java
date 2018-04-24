@@ -18,69 +18,55 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class Protocol {
 
     MovieDaoInterface movieDao = new MySQLMovieDao();
 
-
-    public String processInput(String theInput) throws DaoException, JSONException{
+    public String processInput(String theInput) throws DaoException, JSONException {
         String theOutput = null;
 
+        if (theInput.equalsIgnoreCase("Display all movies")) {
+            List<Movie> allMovies = movieDao.findAllMovies();
+            theOutput = createJSON(allMovies);
 
-            if (theInput.equalsIgnoreCase("Display all movies")) {
-                List<Movie> allMovies = movieDao.findAllMovies();
-               // movieDao.displayListFormat(allMovies);
-               //convert to json
-               
-               
-                theOutput = createJSON(allMovies);
-             
+        } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Search")) {
 
-            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Search")) {
-    
-                String input = theInput.substring(theInput.indexOf(" "));
-                List<Movie> searchedMovies = movieDao.findMovieByTitle(input.trim());
+            String input = theInput.substring(theInput.indexOf(" "));
+            List<Movie> searchedMovies = movieDao.findMovieByTitle(input.trim());
 
-                movieDao.displayListFormat(searchedMovies);
-                theOutput = searchedMovies.toString();
-                if ("[]".equals(theOutput)) {
-                    List<Movie> searchedDirector = movieDao.findMovieByDirector(input.trim());
-                    movieDao.displayListFormat(searchedDirector);
-                    theOutput = searchedDirector.toString();
-                }
-               
+            theOutput = createJSON(searchedMovies);
+  
+            if ("[]".equals(theOutput)) {
+                List<Movie> searchedDirector = movieDao.findMovieByDirector(input.trim());
 
-            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Add")) {
-                //exp: ADD TITLE movietitle GENRE moviegenre DIRECTOR moviedirector
-                String[] components = theInput.split(" ");
-                movieDao.addMovie(components[2], components[4], components[6]);
-                theOutput = "Movie added to the database!";
-            
-
-            } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Delete")) {
-                String[] components = theInput.split(" ");
-                movieDao.deleteMovie(components[1]);
-                theOutput = "Movie deleted from the database!";
-              
-            } 
-            else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Update")) {
-                //exp: UPDATE oldmovietitle TO newmovietitle
-                      String[] components = theInput.split(" ");
-                      movieDao.updateMovieByTitle(components[1], components[3]);
-                      theOutput = "Movie updated!";
-                    ;
+                theOutput  = createJSON(searchedDirector);
             }
-            else {
-                theOutput = "You're supposed to say \"Who's there?\"! "
-                        + "\nTry again. Knock! Knock!";
-            }
-            
-        
+
+        } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Add")) {
+            //exp: ADD TITLE movietitle GENRE moviegenre DIRECTOR moviedirector
+            String[] components = theInput.split(" ");
+            movieDao.addMovie(components[2], components[4], components[6]);
+            theOutput = "Movie added to the database!";
+
+        } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Delete")) {
+            String[] components = theInput.split(" ");
+            movieDao.deleteMovie(components[1]);
+            theOutput = "Movie deleted from the database!";
+
+        } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Update")) {
+            //exp: UPDATE oldmovietitle TO newmovietitle
+            String[] components = theInput.split(" ");
+            movieDao.updateMovieByTitle(components[1], components[3]);
+            theOutput = "Movie updated!";
+            ;
+        } else {
+            theOutput = "You're supposed to say \"Who's there?\"! "
+                    + "\nTry again. Knock! Knock!";
+        }
+
         return theOutput;
     }
-    
-    
+
     public String createJSON(List<Movie> movieList) throws JSONException {
 
 //        JSONObject jsonObject = new JSONObject().put("movies", new JSONArray(movieList));
@@ -119,5 +105,4 @@ public class Protocol {
 //        
 //        return output;
 
-
-    }
+}

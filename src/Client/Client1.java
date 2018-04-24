@@ -45,7 +45,7 @@ public class Client1 {
             // read lines from socket until the socket has been closed.
             // readline() is a blocking method, so it waits until data + '\n' is entered
             // or until the socket is closed.
-            System.out.println("now waiting for response from server.");
+         //   System.out.println("now waiting for response from server.");
 
             while ((fromServer = in.readLine()) != null) {  // keep reading from stream
                 //System.out.println("Received (Server -> Client): " + fromServer);
@@ -84,10 +84,14 @@ public class Client1 {
                 Type type = new TypeToken<List<Movie>>() {
                 }.getType();
 
-                List<Movie> moviesList = gson.fromJson(fromServer, type);
-
-                for (Movie m : moviesList) {
-                    System.out.println(m.getTitle());
+                try {
+                    List<Movie> moviesList = gson.fromJson(fromServer, type);
+                    for (Movie m : moviesList) {
+                        System.out.println(m.getTitle());
+                    }
+                } catch (com.google.gson.JsonSyntaxException e) {
+               //     System.out.println("NOT A JSON");
+                    System.out.println(fromServer);
                 }
 
                 System.out.println("Enter next command:  ");
