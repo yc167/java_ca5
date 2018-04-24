@@ -94,7 +94,7 @@ public class Client1 {
                     System.out.println(fromServer);
                 }
 
-                System.out.println("Enter next command:  ");
+                System.out.println("\n" + "Enter next command:  ");
                 userInput = stdIn.readLine();  // ask user for input
                 if (userInput != null) {
                     System.out.println("Sending (Client -> Server): " + userInput);

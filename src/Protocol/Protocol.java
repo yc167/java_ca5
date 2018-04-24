@@ -58,10 +58,15 @@ public class Protocol {
             String[] components = theInput.split(" ");
             movieDao.updateMovieByTitle(components[1], components[3]);
             theOutput = "Movie updated!";
-            ;
+            
+        } else if (theInput.substring(0, theInput.indexOf(" ")).equalsIgnoreCase("Recommend")) {
+            //exp: recommend horror movies
+            String[] components = theInput.split(" ");
+            List<Movie> recommendedMovies = movieDao.findMovieByGenre(components[1]);
+            theOutput = createJSON(recommendedMovies);
+            
         } else {
-            theOutput = "You're supposed to say \"Who's there?\"! "
-                    + "\nTry again. Knock! Knock!";
+            theOutput ="Error!";
         }
 
         return theOutput;
