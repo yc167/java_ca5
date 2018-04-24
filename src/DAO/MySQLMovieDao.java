@@ -416,6 +416,76 @@ public class MySQLMovieDao extends MySQLDao implements MovieDaoInterface {
         }
     }
 
+    public void watchMovie(String title) throws DaoException {
+        
+        
+        findMovieByTitle(title);
+        
+        
+        
+        Connection con = null;
+        PreparedStatement ps = null;
+        PreparedStatement ps1 = null;
+        ResultSet rs = null;
+        ResultSet rs1 = null;
+        List<Movie> moviesWatched = new ArrayList<Movie>();
+        try {
+            con = this.getConnection();
+
+            String query = "select * from movies where title = ?";
+            ps = con.prepareStatement(query);
+
+            ps.setString(1, title);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String t = rs.getString("TITLE");
+                String g = rs.getString("GENRE");
+                String director = rs.getString("DIRECTOR");
+                String runtime = rs.getString("RUNTIME");
+                String plot = rs.getString("PLOT");
+                String location = rs.getString("LOCATION");
+                String poster = rs.getString("POSTER");
+                String rating = rs.getString("RATING");
+                String format = rs.getString("FORMAT");
+                String year = rs.getString("YEAR");
+                String starring = rs.getString("STARRING");
+                String copies = rs.getString("COPIES");
+                String barcode = rs.getString("BARCODE");
+                String user_rating = rs.getString("USER_RATING");
+                Movie m = new Movie(id, t, g, director, runtime, plot, location, poster, rating, format, year, starring, copies, barcode, user_rating);
+                moviesWatched.add(m);
+
+                System.out.println(m);
+                
+//                for (Movie i : moviesWatched) {
+//                        System.out.println("Movie id : " + i.getId() + "Title :" + i.getTitle());
+//                        String mv = i.getTitle();
+//                              System.out.println("Movie Title: " + mv);
+//                    String query1 = "INSERT INTO history (title) VALUES (example)";
+//                         ps1.setString(1,i.getTitle());
+//                    ps1 = con.prepareStatement(query1);
+//                    ps1.executeUpdate();
+//                }
+
+            }
+        } catch (SQLException e) {
+            throw new DaoException("recordMovie " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("recordMovie" + e.getMessage());
+            }
+        }
+    }
+
+    
     public void createJson(List<Movie> movies) throws JSONException {
         JSONObject json = new JSONObject();
 
