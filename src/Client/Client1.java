@@ -42,41 +42,12 @@ public class Client1 {
                 out.println(userInput);  // send message to server
             }
 
-            // read lines from socket until the socket has been closed.
-            // readline() is a blocking method, so it waits until data + '\n' is entered
-            // or until the socket is closed.
-         //   System.out.println("now waiting for response from server.");
-
             while ((fromServer = in.readLine()) != null) {  // keep reading from stream
                 //System.out.println("Received (Server -> Client): " + fromServer);
                 if (fromServer.equals("Bye.")) {
                     break;
                 }
 
-//                // conver the json string from server into List<Movies> using JSONArray
-//                JSONObject obj = new JSONObject(fromServer);
-//               
-//                System.out.println("JSON Object dump: " + obj.toString());
-//
-//                JSONArray arr = obj.getJSONArray();
-//
-//                // code here to convert a JSONArray to a List<Movie>  using JSON ORG
-//                List<Movie> list = new ArrayList<Movie>();
-//                
-//
-//                if (arr != null) {
-//                    for (int i = 0; i < arr.length(); i++) {
-//                        
-//                        System.out.println("\n\n ... in loop, about to getJSONObject() ** \n\n");
-//                        
-//                        JSONObject o = arr.getJSONObject(i); 
-//                        
-//                        System.out.println("id = " + o.get("id"));
-//                        
-//                        
-//                        //list.add(arr.get(i));
-//                    }
-//                }
                 Gson gson = new Gson();
 
                 // pass the JSON String and the type of the object into the deserializer
@@ -86,11 +57,12 @@ public class Client1 {
 
                 try {
                     List<Movie> moviesList = gson.fromJson(fromServer, type);
+                   
                     for (Movie m : moviesList) {
-                        System.out.println(m.getTitle());
+                        
+                        System.out.format("%60s%60s%60s%10s%10s%5s%8s%5s%5s%30s%3s%5s%5s%40s",m.getTitle(), m.getGenre(), m.getDirector(),m.getRuntime(), m.getLocation(),m.getPoster(),m.getRating(),m.getFormat(),m.getYear(),m.getStarring(),m.getCopies(),m.getBarcode(),m.getUser_rating(), m.getPlot() + "\n");
                     }
                 } catch (com.google.gson.JsonSyntaxException e) {
-               //     System.out.println("NOT A JSON");
                     System.out.println(fromServer);
                 }
 
